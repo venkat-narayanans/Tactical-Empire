@@ -1,0 +1,340 @@
+/* Menu, create, join, how-to-play, lobby, game over, notifications. */
+
+.menu {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background:
+    radial-gradient(1100px 520px at 50% -10%, #ffffff 0%, rgba(255, 255, 255, 0) 65%),
+    var(--surface-page);
+}
+
+.menu__card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+.menu__card--wide {
+  max-width: 720px;
+}
+
+.menu__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu__logo {
+  font-size: 34px;
+  font-weight: 780;
+  letter-spacing: -0.02em;
+}
+
+.input--code {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--gap);
+  margin: 0;
+  padding: var(--gap);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.settings-grid legend {
+  padding: 0 6px;
+}
+
+.toggles {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0 var(--gap);
+}
+
+.form-error {
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.howto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  max-height: 56vh;
+  padding-right: 6px;
+}
+
+.howto h2 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.howto ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.howto__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  list-style: none;
+  padding-left: 0;
+}
+
+/* ------------------------------------------------------------------- lobby */
+
+.lobby {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-lg);
+  padding: 28px 20px;
+}
+
+.lobby__grid {
+  width: 100%;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-lg);
+  align-items: start;
+}
+
+.lobby__settings {
+  grid-column: 1 / -1;
+}
+
+.lobby__code {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.lobby__code-value {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  font-size: 26px;
+  font-weight: 780;
+  letter-spacing: 0.22em;
+  text-align: center;
+  color: var(--ink-strong);
+}
+
+.lobby__players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lobby__player {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: 9px 14px;
+  border-top: 1px solid var(--line);
+}
+
+.lobby__player-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.lobby__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.lobby__hint {
+  margin-top: -8px;
+}
+
+.swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--line-strong);
+  flex: 0 0 auto;
+}
+
+.swatch--sm {
+  width: 11px;
+  height: 11px;
+  border-width: 1.5px;
+}
+
+.colour-picker {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: var(--gap-sm);
+}
+
+.colour-swatch {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 1px var(--line-strong);
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colour-swatch--selected {
+  border-color: var(--ink-strong);
+  box-shadow: 0 0 0 2px var(--ink-strong);
+}
+
+.colour-swatch:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------------------------- scoreboard */
+
+.scoreboard {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.scoreboard th,
+.scoreboard td {
+  padding: 8px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+}
+
+.scoreboard thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+}
+
+.scoreboard tbody th {
+  text-align: left;
+  font-weight: 650;
+}
+
+.scoreboard__winner {
+  background: var(--positive-soft);
+}
+
+/* ------------------------------------------------------- toasts and banner */
+
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--actionbar-height) + 14px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  z-index: 40;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  min-width: 240px;
+  max-width: 340px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow);
+  font-size: 13px;
+  pointer-events: auto;
+  animation: toast-in 160ms ease-out;
+}
+
+.toast--success {
+  border-left: 3px solid var(--positive);
+}
+
+.toast--warning {
+  border-left: 3px solid var(--warning);
+}
+
+.toast--error {
+  border-left: 3px solid var(--danger);
+}
+
+.toast--info {
+  border-left: 3px solid var(--accent);
+}
+
+.toast__close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--ink-faint);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.connection-banner {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--warning-soft);
+  color: var(--warning);
+  font-size: 13px;
+  font-weight: 650;
+  box-shadow: var(--shadow);
+  z-index: 50;
+}
+
+@media (max-width: 760px) {
+  .lobby__grid {
+    grid-template-columns: 1fr;
+  }
+}

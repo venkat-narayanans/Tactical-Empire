@@ -1,0 +1,104 @@
+/*
+ * Design tokens for Tactical Empire.
+ *
+ * A light, neutral interface where the board is the only saturated surface.
+ * Player colour is reserved for ownership and identity; territory accents are
+ * deliberately desaturated so the two languages never read as the same thing.
+ */
+
+:root {
+  /* Surfaces */
+  --surface-page: #f2f4f7;
+  --surface-panel: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #eef1f5;
+  --surface-board: #e7ebf0;
+  --surface-tile: #fbfcfd;
+  --surface-tile-hover: #f2f6fb;
+
+  /* Ink */
+  --ink-strong: #10151f;
+  --ink: #26303f;
+  --ink-muted: #5d6b7f;
+  --ink-faint: #8a97a8;
+  --ink-inverse: #ffffff;
+
+  /* Lines */
+  --line: #d5dce5;
+  --line-strong: #b9c3cf;
+
+  /* Accents */
+  --accent: #2f5fd0;
+  --accent-hover: #2650b4;
+  --accent-soft: #e5edfd;
+  --positive: #0f8a4d;
+  --positive-soft: #e2f5eb;
+  --warning: #b26a00;
+  --warning-soft: #fdf0da;
+  --danger: #c62b3f;
+  --danger-soft: #fdeaec;
+
+  /* Player colours - the ownership language */
+  --player-crimson: #d7263d;
+  --player-azure: #1f6feb;
+  --player-emerald: #12915a;
+  --player-amber: #d98a04;
+  --player-violet: #7c4dd8;
+  --player-coral: #e2603a;
+  --player-teal: #0f9195;
+  --player-slate: #57657a;
+
+  /* Territory accents - quieter than player colours by design */
+  --territory-T1: #7d8fa8;
+  --territory-T2: #8a7fb0;
+  --territory-T3: #5f9ba6;
+  --territory-T4: #a8836a;
+  --territory-T5: #6f9d78;
+  --territory-T6: #a67b96;
+  --territory-T7: #8d9663;
+  --territory-T8: #6d84b4;
+
+  /* Shape */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(16, 21, 31, 0.06);
+  --shadow: 0 2px 8px rgba(16, 21, 31, 0.08);
+  --shadow-lg: 0 12px 32px rgba(16, 21, 31, 0.16);
+
+  /* Rhythm */
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap: 12px;
+  --gap-lg: 18px;
+
+  /* Chrome heights, used to size the board so the page never scrolls. */
+  --topbar-height: 52px;
+  --actionbar-height: 76px;
+  --left-panel-width: 250px;
+  --right-panel-width: 320px;
+
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-numeric: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/*
+ * The board is sized from whichever of viewport height or width binds first,
+ * so 1366x768 through 1920x1080 all fit in one screen with no page scrolling.
+ */
+.layout-game {
+  --board-size: min(
+    calc(100vh - var(--topbar-height) - var(--actionbar-height) - 32px),
+    calc(100vw - var(--left-panel-width) - var(--right-panel-width) - 56px)
+  );
+  --tile-unit: calc(var(--board-size) / 12.2);
+  --tile-font: clamp(7px, calc(var(--tile-unit) * 0.185), 12px);
+  --tile-font-sm: clamp(6px, calc(var(--tile-unit) * 0.155), 10px);
+}
+
+@media (max-width: 1400px) {
+  :root {
+    --left-panel-width: 218px;
+    --right-panel-width: 286px;
+  }
+}

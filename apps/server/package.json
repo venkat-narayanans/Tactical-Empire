@@ -1,0 +1,28 @@
+{
+  "name": "@te/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts --port 3001",
+    "start": "node dist/index.js",
+    "build": "node ./build.mjs"
+  },
+  "dependencies": {
+    "@fastify/static": "^8.0.3",
+    "@te/config": "*",
+    "@te/game-engine": "*",
+    "@te/shared": "*",
+    "better-sqlite3": "^11.7.0",
+    "fastify": "^5.2.0",
+    "ws": "^8.18.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/ws": "^8.5.13",
+    "esbuild": "^0.24.2",
+    "tsx": "^4.19.2"
+  }
+}

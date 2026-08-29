@@ -1,0 +1,377 @@
+/* Board, tiles, emblems, development marks and tokens. */
+
+.board {
+  width: var(--board-size);
+  height: var(--board-size);
+  flex: 0 0 auto;
+}
+
+.board__grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1.6fr repeat(9, 1fr) 1.6fr;
+  grid-template-rows: 1.6fr repeat(9, 1fr) 1.6fr;
+  gap: 2px;
+  padding: 6px;
+  background: var(--surface-board);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.board__cell {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------------- tiles */
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1px;
+  width: 100%;
+  height: 100%;
+  padding: 3px 2px 2px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-tile);
+  color: var(--ink);
+  text-align: center;
+  font-family: inherit;
+  cursor: default;
+}
+
+button.tile {
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+button.tile:hover {
+  background: var(--surface-tile-hover);
+  border-color: var(--line-strong);
+}
+
+.tile--selected {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.tile--corner,
+.board__cell--corner .tile {
+  justify-content: center;
+  gap: 3px;
+  background: var(--surface-sunken);
+}
+
+.tile--treasure {
+  background: #fdfaf1;
+}
+
+.tile--surprise {
+  background: #f5f7fd;
+}
+
+.tile--fee {
+  background: #fdf5f5;
+}
+
+/* Ownership is an accent bar plus a tint - never a full colour fill, so the
+   city name, price and emblem stay legible. */
+.tile__ownerbar {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: transparent;
+}
+
+.tile--owned {
+  background: color-mix(in srgb, var(--owner-colour) 9%, var(--surface-tile));
+  border-color: color-mix(in srgb, var(--owner-colour) 45%, var(--line));
+}
+
+.tile--owned .tile__ownerbar {
+  background: var(--owner-colour);
+}
+
+.tile--mortgaged {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--surface-sunken),
+    var(--surface-sunken) 5px,
+    #e2e6ec 5px,
+    #e2e6ec 10px
+  );
+}
+
+.tile__head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 14px;
+  flex-wrap: wrap;
+}
+
+.tile__name {
+  font-size: var(--tile-font);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink-strong);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  max-height: 2.3em;
+  overflow: hidden;
+}
+
+.tile__price {
+  font-size: var(--tile-font-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+  line-height: 1.1;
+}
+
+.tile__flag {
+  font-size: var(--tile-font-sm);
+  color: var(--danger);
+  font-weight: 650;
+}
+
+.board__cell--corner .tile__name {
+  font-size: calc(var(--tile-font) * 1.05);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------- emblems */
+
+.emblem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--emblem-colour) 18%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--emblem-colour) 55%, #ffffff);
+}
+
+.emblem svg {
+  width: 72%;
+  height: 72%;
+  fill: var(--emblem-colour);
+}
+
+.emblem__label {
+  margin-left: 4px;
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.space-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.space-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--ink-muted);
+}
+
+.space-icon--corner svg {
+  fill: var(--ink);
+}
+
+.space-icon--treasure svg {
+  fill: #b7861f;
+}
+
+.space-icon--surprise svg {
+  fill: var(--accent);
+}
+
+.space-icon--fee svg {
+  fill: var(--danger);
+}
+
+/* ----------------------------------------------------------- development */
+
+.development {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.development__house {
+  width: calc(var(--tile-unit) * 0.16);
+  height: calc(var(--tile-unit) * 0.16);
+  min-width: 6px;
+  min-height: 6px;
+  fill: var(--positive);
+}
+
+.development__hotel {
+  width: calc(var(--tile-unit) * 0.32);
+  height: calc(var(--tile-unit) * 0.22);
+  min-width: 12px;
+  min-height: 8px;
+  fill: var(--danger);
+}
+
+.development__band {
+  fill: #ffffff;
+}
+
+.development--damaged .development__house,
+.development--damaged .development__hotel {
+  fill: var(--ink-faint);
+}
+
+/* --------------------------------------------------------------- tokens */
+
+.tile__tokens {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-bottom: 3px;
+}
+
+.token {
+  display: inline-block;
+  width: calc(var(--tile-unit) * 0.24);
+  height: calc(var(--tile-unit) * 0.24);
+  min-width: 9px;
+  min-height: 9px;
+  border-radius: 50%;
+  background: var(--token-colour);
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(16, 21, 31, 0.35);
+  transition: transform 120ms ease;
+}
+
+.token--active {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--token-colour) 40%, transparent),
+    0 1px 3px rgba(16, 21, 31, 0.35);
+}
+
+/* --------------------------------------------------------------- centre */
+
+.board__centre {
+  grid-row: 2 / span 9;
+  grid-column: 2 / span 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-lg);
+  padding: var(--gap);
+  background: linear-gradient(160deg, #fbfcfe 0%, #eef2f7 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.board__brand {
+  text-align: center;
+}
+
+.board__brand-title {
+  display: block;
+  font-size: clamp(16px, calc(var(--tile-unit) * 0.44), 26px);
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  color: var(--ink-strong);
+}
+
+.board__brand-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.board__legend {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+/* ----------------------------------------------------------------- dice */
+
+.dice {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: 8px 14px;
+  background: var(--surface-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.dice--empty {
+  padding: 10px 16px;
+}
+
+.die {
+  width: clamp(26px, calc(var(--tile-unit) * 0.72), 44px);
+  height: clamp(26px, calc(var(--tile-unit) * 0.72), 44px);
+}
+
+.die__body {
+  fill: #ffffff;
+  stroke: var(--line-strong);
+  stroke-width: 3;
+}
+
+.die__pip {
+  fill: var(--ink-strong);
+}
+
+.dice__total {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-strong);
+}
+
+.dice--rolling .die {
+  animation: dice-shake 220ms ease-in-out 3;
+}
+
+@keyframes dice-shake {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(-9deg);
+  }
+  75% {
+    transform: translateY(3px) rotate(8deg);
+  }
+}

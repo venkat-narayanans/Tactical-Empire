@@ -1,0 +1,1172 @@
+{
+  "game": {
+    "name": "Tactical Empire",
+    "version": "1.0.0",
+    "currency": "INR",
+    "board_size": 40,
+    "corner_tiles": 4,
+    "property_tiles": 22,
+    "special_tiles": 14
+  },
+  "defaults": {
+    "max_players": 8,
+    "min_players": 2,
+    "starting_cash": 3000,
+    "turn_duration_seconds": 60,
+    "max_rounds": 60,
+    "start_pass_bonus": 200,
+    "double_roll_limit": 3
+  },
+  "territories": [
+    {
+      "id": "T1",
+      "name": "Territory 1",
+      "cities": [
+        "madagadipet",
+        "thirubhuvanai"
+      ],
+      "bonus": 500,
+      "size": 2
+    },
+    {
+      "id": "T2",
+      "name": "Territory 2",
+      "cities": [
+        "molapaakam",
+        "kandamangalam",
+        "ariyur"
+      ],
+      "bonus": 750,
+      "size": 3
+    },
+    {
+      "id": "T3",
+      "name": "Territory 3",
+      "cities": [
+        "thirukaanji",
+        "villianur",
+        "sulthanpet"
+      ],
+      "bonus": 750,
+      "size": 3
+    },
+    {
+      "id": "T4",
+      "name": "Territory 4",
+      "cities": [
+        "velrampet",
+        "ariyankuppam",
+        "cuddalore"
+      ],
+      "bonus": 750,
+      "size": 3
+    },
+    {
+      "id": "T5",
+      "name": "Territory 5",
+      "cities": [
+        "kalapet",
+        "rediyarpalayam",
+        "kottakuppam"
+      ],
+      "bonus": 750,
+      "size": 3
+    },
+    {
+      "id": "T6",
+      "name": "Territory 6",
+      "cities": [
+        "lawspet",
+        "muthialpet",
+        "nellithope"
+      ],
+      "bonus": 750,
+      "size": 3
+    },
+    {
+      "id": "T7",
+      "name": "Territory 7",
+      "cities": [
+        "uzhavarkarai",
+        "thattanchavady"
+      ],
+      "bonus": 500,
+      "size": 2
+    },
+    {
+      "id": "T8",
+      "name": "Territory 8",
+      "cities": [
+        "bussy_street",
+        "mission_street",
+        "white_town"
+      ],
+      "bonus": 750,
+      "size": 3
+    }
+  ],
+  "cities": [
+    [
+      "madagadipet",
+      "Madagadipet",
+      220,
+      "T1"
+    ],
+    [
+      "thirubhuvanai",
+      "Thirubhuvanai",
+      240,
+      "T1"
+    ],
+    [
+      "molapaakam",
+      "Molapaakam",
+      260,
+      "T2"
+    ],
+    [
+      "kandamangalam",
+      "Kandamangalam",
+      280,
+      "T2"
+    ],
+    [
+      "ariyur",
+      "Ariyur",
+      300,
+      "T2"
+    ],
+    [
+      "thirukaanji",
+      "Thirukaanji",
+      280,
+      "T3"
+    ],
+    [
+      "villianur",
+      "Villianur",
+      300,
+      "T3"
+    ],
+    [
+      "sulthanpet",
+      "Sulthanpet",
+      320,
+      "T3"
+    ],
+    [
+      "velrampet",
+      "Velrampet",
+      320,
+      "T4"
+    ],
+    [
+      "ariyankuppam",
+      "Ariyankuppam",
+      340,
+      "T4"
+    ],
+    [
+      "cuddalore",
+      "Cuddalore",
+      360,
+      "T4"
+    ],
+    [
+      "kalapet",
+      "Kalapet",
+      320,
+      "T5"
+    ],
+    [
+      "rediyarpalayam",
+      "Rediyarpalayam",
+      340,
+      "T5"
+    ],
+    [
+      "kottakuppam",
+      "Kottakuppam",
+      360,
+      "T5"
+    ],
+    [
+      "lawspet",
+      "Lawspet",
+      380,
+      "T6"
+    ],
+    [
+      "muthialpet",
+      "Muthialpet",
+      400,
+      "T6"
+    ],
+    [
+      "nellithope",
+      "Nellithope",
+      420,
+      "T6"
+    ],
+    [
+      "uzhavarkarai",
+      "Uzhavarkarai",
+      380,
+      "T7"
+    ],
+    [
+      "thattanchavady",
+      "Thattanchavady",
+      400,
+      "T7"
+    ],
+    [
+      "bussy_street",
+      "Bussy Street",
+      420,
+      "T8"
+    ],
+    [
+      "mission_street",
+      "Mission Street",
+      440,
+      "T8"
+    ],
+    [
+      "white_town",
+      "White Town",
+      460,
+      "T8"
+    ]
+  ],
+  "development": {
+    "rent_multipliers": {
+      "0": 1,
+      "1": 3,
+      "2": 6,
+      "3": 10,
+      "4": 15,
+      "5": 22
+    },
+    "house_cost_by_territory": {
+      "T1": 50,
+      "T2": 60,
+      "T3": 70,
+      "T4": 80,
+      "T5": 80,
+      "T6": 90,
+      "T7": 90,
+      "T8": 100
+    },
+    "hotel_cost_same_as_house": true,
+    "resale_percentage": 0.5,
+    "even_build_max_level_difference": 1
+  },
+  "special_properties": [
+    {
+      "id": "kpt_dam",
+      "name": "KPT Dam",
+      "price": 150,
+      "group": "public_works"
+    },
+    {
+      "id": "hotel_bismi",
+      "name": "Hotel Bismi",
+      "price": 180,
+      "group": "hospitality"
+    },
+    {
+      "id": "boat_house",
+      "name": "Boat House",
+      "price": 200,
+      "group": "transport"
+    },
+    {
+      "id": "airport",
+      "name": "Airport",
+      "price": 220,
+      "group": "transport"
+    },
+    {
+      "id": "hotel_rolex",
+      "name": "Hotel Rolex",
+      "price": 190,
+      "group": "hospitality"
+    },
+    {
+      "id": "mandi",
+      "name": "Mandi",
+      "price": 170,
+      "group": "public_works"
+    },
+    {
+      "id": "rock_beach",
+      "name": "Rock Beach",
+      "price": 180,
+      "group": "public_works"
+    }
+  ],
+  "special_property_rules": {
+    "transport": {
+      "rent": {
+        "1": 40,
+        "2": 100
+      }
+    },
+    "hospitality": {
+      "rent": {
+        "1": 35,
+        "2": 90
+      }
+    },
+    "public_works": {
+      "rent_formula": "dice_total * multiplier",
+      "multipliers": {
+        "1": 4,
+        "2": 10,
+        "3": 15
+      }
+    }
+  },
+  "event_decks": {
+    "treasure": [
+      [
+        "royal_grant",
+        "+300"
+      ],
+      [
+        "market_profit",
+        "+250"
+      ],
+      [
+        "hidden_purse",
+        "+200"
+      ],
+      [
+        "merchant_reward",
+        "+350"
+      ],
+      [
+        "tax_refund",
+        "+200"
+      ],
+      [
+        "trade_bonus",
+        "+150"
+      ],
+      [
+        "land_grant",
+        "+250"
+      ],
+      [
+        "safe_passage",
+        "+100"
+      ],
+      [
+        "gold_chest",
+        "+400"
+      ],
+      [
+        "old_contract",
+        "+180"
+      ],
+      [
+        "caravan_profit",
+        "+220"
+      ],
+      [
+        "lucky_find",
+        "+150"
+      ]
+    ],
+    "surprise": [
+      [
+        "market_crash",
+        "-150"
+      ],
+      [
+        "sudden_profit",
+        "+250"
+      ],
+      [
+        "lost_purse",
+        "-100"
+      ],
+      [
+        "royal_reward",
+        "+300"
+      ],
+      [
+        "road_trouble",
+        "move:-2"
+      ],
+      [
+        "lucky_route",
+        "move:+3"
+      ],
+      [
+        "repair_cost",
+        "-120"
+      ],
+      [
+        "merchant_deal",
+        "+180"
+      ],
+      [
+        "unexpected_tax",
+        "-200"
+      ],
+      [
+        "free_scout",
+        "scout_cost:0_next_use"
+      ],
+      [
+        "army_recruit",
+        "army:guard:+1"
+      ],
+      [
+        "safe_journey",
+        "+100"
+      ]
+    ],
+    "reshuffle_when_empty": true,
+    "max_automatic_resolution_chain_depth": 3
+  },
+  "corner_rules": {
+    "start": {
+      "position": 0,
+      "pass_bonus": 200
+    },
+    "ig_signal": {
+      "type": "detention",
+      "release_fee": 100,
+      "max_failed_double_attempts": 3,
+      "release_by_doubles": true,
+      "release_card_supported": true
+    },
+    "vacation": {
+      "vacation_cash_enabled": true
+    },
+    "go_to_ig_signal": {
+      "target": "ig_signal",
+      "receives_start_bonus": false
+    }
+  },
+  "fees": {
+    "college_fees": 150,
+    "vacation_cash_routes_fee_to_pot": true
+  },
+  "mortgage": {
+    "enabled_by_default": true,
+    "mortgage_percentage": 0.5,
+    "unmortgage_interest": 0.1,
+    "rent_while_mortgaged": 0,
+    "building_while_mortgaged": false
+  },
+  "army": {
+    "units": [
+      {
+        "id": "guard",
+        "name": "Guard",
+        "cost": 250,
+        "power": 30
+      },
+      {
+        "id": "archer",
+        "name": "Archer",
+        "cost": 350,
+        "power": 45
+      },
+      {
+        "id": "rider",
+        "name": "Rider",
+        "cost": 500,
+        "power": 65
+      },
+      {
+        "id": "siege",
+        "name": "Siege",
+        "cost": 750,
+        "power": 90
+      }
+    ],
+    "base_capacity": 6,
+    "additional_capacity_per_2_cities": 1,
+    "max_capacity": 14,
+    "resale_percentage": 0.5,
+    "power_formula": "sum(active_unit.power)"
+  },
+  "scouting": {
+    "cost": 100,
+    "same_target_cooldown_rounds": 1,
+    "reveals": {
+      "property_count": "exact",
+      "completed_territories": "exact",
+      "army_unit_types": "exact",
+      "army_power": "exact",
+      "alliance_status": "exact",
+      "cash": "range"
+    }
+  },
+  "alliances": {
+    "max_active_per_player": 1,
+    "duration_rounds": 3,
+    "post_end_cooldown_rounds": 1,
+    "army_lend_max_percentage_of_available_power": 0.3,
+    "defender_ally_must_accept": true,
+    "lent_units_locked": true
+  },
+  "war": {
+    "max_outgoing_wars_per_turn": 1,
+    "max_active_wars_per_player": 1,
+    "declaration_fee": {
+      "formula": "clamp(territory_property_value * 0.10, 100, 250)"
+    },
+    "home_defense_bonus": 0.1,
+    "development_defense": {
+      "house_1": 5,
+      "house_2": 10,
+      "house_3": 15,
+      "house_4": 20,
+      "hotel": 30
+    },
+    "battle_factor_min": 0.9,
+    "battle_factor_max": 1.1,
+    "casualties": {
+      "close_battle": 0.3,
+      "moderate_victory": 0.25,
+      "decisive_victory": 0.2,
+      "winner_also_takes_casualties": true,
+      "unit_selection": "weakest_first"
+    },
+    "capture": {
+      "transfer_all_target_player_cities_in_selected_territory": true,
+      "buildings_remain": true,
+      "war_damage_rounds": 1,
+      "war_damage_rent_multiplier": 0.75,
+      "war_damage_blocks_building": true
+    },
+    "locked_during_war": [
+      "trade",
+      "new_mortgage"
+    ]
+  },
+  "trade": {
+    "allowed_assets": [
+      "cash",
+      "properties"
+    ],
+    "army_trade_allowed": false,
+    "alliance_trade_allowed": false,
+    "atomic_execution": true,
+    "locked_assets": [
+      "active_auction",
+      "active_war",
+      "bankruptcy"
+    ]
+  },
+  "auction": {
+    "starting_bid": 0,
+    "bid_must_exceed_current": true,
+    "bid_cannot_exceed_cash": true,
+    "no_bid_result": "property_remains_unowned",
+    "anti_sniping_extension_seconds": 5
+  },
+  "bankruptcy": {
+    "trigger": "required_payment > cash",
+    "liquidation_order": [
+      "sell_buildings",
+      "mortgage_properties",
+      "sell_army",
+      "trade_eligible_assets"
+    ],
+    "army_transfer_to_creditor": true,
+    "bank_assets_return_to_unowned": true,
+    "bankruptcy_cancels": [
+      "trades",
+      "alliances",
+      "war_participation",
+      "army_lending",
+      "scouting"
+    ],
+    "player_eliminated": true
+  },
+  "victory": {
+    "end_conditions": [
+      "only_one_active_player_remains",
+      "round_number_reaches_max_rounds"
+    ],
+    "final_score": {
+      "cash": 1.0,
+      "property_value": 1.0,
+      "building_value": 1.0,
+      "army_value": 1.0,
+      "territory_bonus": 1.0
+    },
+    "asset_valuation": {
+      "property": 1.0,
+      "buildings": 0.5,
+      "army": 0.5
+    },
+    "tie_breakers": [
+      "completed_territories",
+      "army_power",
+      "cash",
+      "shared_victory"
+    ]
+  },
+  "host_settings": {
+    "maximum_players": {
+      "default": 8,
+      "min": 2,
+      "max": 8
+    },
+    "starting_cash": {
+      "default": 3000,
+      "min": 500,
+      "max": 10000
+    },
+    "turn_duration_seconds": {
+      "default": 60,
+      "min": 30,
+      "max": 180
+    },
+    "auction": true,
+    "full_set_x2_rent": true,
+    "vacation_cash": true,
+    "rent_while_in_ig_signal": true,
+    "mortgage": true,
+    "even_build": true,
+    "randomize_player_order": true,
+    "private_room": false,
+    "bots": false,
+    "freeze_after_game_start": true
+  },
+  "board_order": [
+    [
+      "start",
+      "START",
+      "corner"
+    ],
+    [
+      "madagadipet",
+      "Madagadipet",
+      "city"
+    ],
+    [
+      "treasure_1",
+      "Treasure",
+      "treasure"
+    ],
+    [
+      "thirubhuvanai",
+      "Thirubhuvanai",
+      "city"
+    ],
+    [
+      "college_fees",
+      "College Fees",
+      "fee"
+    ],
+    [
+      "kpt_dam",
+      "KPT Dam",
+      "special_property"
+    ],
+    [
+      "molapaakam",
+      "Molapaakam",
+      "city"
+    ],
+    [
+      "kandamangalam",
+      "Kandamangalam",
+      "city"
+    ],
+    [
+      "surprise_1",
+      "Surprise",
+      "surprise"
+    ],
+    [
+      "ariyur",
+      "Ariyur",
+      "city"
+    ],
+    [
+      "ig_signal",
+      "IG SIGNAL",
+      "corner"
+    ],
+    [
+      "thirukaanji",
+      "Thirukaanji",
+      "city"
+    ],
+    [
+      "hotel_bismi",
+      "Hotel Bismi",
+      "special_property"
+    ],
+    [
+      "villianur",
+      "Villianur",
+      "city"
+    ],
+    [
+      "sulthanpet",
+      "Sulthanpet",
+      "city"
+    ],
+    [
+      "boat_house",
+      "Boat House",
+      "special_property"
+    ],
+    [
+      "velrampet",
+      "Velrampet",
+      "city"
+    ],
+    [
+      "treasure_2",
+      "Treasure",
+      "treasure"
+    ],
+    [
+      "ariyankuppam",
+      "Ariyankuppam",
+      "city"
+    ],
+    [
+      "cuddalore",
+      "Cuddalore",
+      "city"
+    ],
+    [
+      "vacation",
+      "VACATION",
+      "corner"
+    ],
+    [
+      "kalapet",
+      "Kalapet",
+      "city"
+    ],
+    [
+      "surprise_2",
+      "Surprise",
+      "surprise"
+    ],
+    [
+      "rediyarpalayam",
+      "Rediyarpalayam",
+      "city"
+    ],
+    [
+      "kottakuppam",
+      "Kottakuppam",
+      "city"
+    ],
+    [
+      "airport",
+      "Airport",
+      "special_property"
+    ],
+    [
+      "lawspet",
+      "Lawspet",
+      "city"
+    ],
+    [
+      "hotel_rolex",
+      "Hotel Rolex",
+      "special_property"
+    ],
+    [
+      "muthialpet",
+      "Muthialpet",
+      "city"
+    ],
+    [
+      "nellithope",
+      "Nellithope",
+      "city"
+    ],
+    [
+      "go_to_ig_signal",
+      "GO TO IG SIGNAL",
+      "corner"
+    ],
+    [
+      "uzhavarkarai",
+      "Uzhavarkarai",
+      "city"
+    ],
+    [
+      "mandi",
+      "Mandi",
+      "special_property"
+    ],
+    [
+      "thattanchavady",
+      "Thattanchavady",
+      "city"
+    ],
+    [
+      "surprise_3",
+      "Surprise",
+      "surprise"
+    ],
+    [
+      "rock_beach",
+      "Rock Beach",
+      "special_property"
+    ],
+    [
+      "bussy_street",
+      "Bussy Street",
+      "city"
+    ],
+    [
+      "treasure_3",
+      "Treasure",
+      "treasure"
+    ],
+    [
+      "mission_street",
+      "Mission Street",
+      "city"
+    ],
+    [
+      "white_town",
+      "White Town",
+      "city"
+    ]
+  ],
+  "invariants": [
+    "cash must never be negative",
+    "only current player may perform turn actions",
+    "client never determines authoritative dice or war RNG",
+    "one property can have at most one owner",
+    "one army unit cannot be simultaneously active, lent, sold, or lost",
+    "one asset cannot participate in conflicting trade/auction/war locks",
+    "territory completion is derived from city ownership",
+    "army power is derived from active units",
+    "all important commands are idempotent using actionId",
+    "state-changing operations are atomic",
+    "host settings freeze when game starts",
+    "automatic event chains cannot exceed configured maximum depth",
+    "all money uses integer currency units"
+  ],
+  "city_economics": {
+    "madagadipet": {
+      "purchase_price": 220,
+      "base_rent": 20,
+      "rent": {
+        "0": 20,
+        "1": 60,
+        "2": 120,
+        "3": 200,
+        "4": 300,
+        "5": 440
+      },
+      "territory_id": "T1",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "thirubhuvanai": {
+      "purchase_price": 240,
+      "base_rent": 25,
+      "rent": {
+        "0": 25,
+        "1": 75,
+        "2": 150,
+        "3": 250,
+        "4": 375,
+        "5": 550
+      },
+      "territory_id": "T1",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "molapaakam": {
+      "purchase_price": 260,
+      "base_rent": 25,
+      "rent": {
+        "0": 25,
+        "1": 75,
+        "2": 150,
+        "3": 250,
+        "4": 375,
+        "5": 550
+      },
+      "territory_id": "T2",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "kandamangalam": {
+      "purchase_price": 280,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T2",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "ariyur": {
+      "purchase_price": 300,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T2",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "thirukaanji": {
+      "purchase_price": 280,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T3",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "villianur": {
+      "purchase_price": 300,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T3",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "sulthanpet": {
+      "purchase_price": 320,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T3",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "velrampet": {
+      "purchase_price": 320,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T4",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "ariyankuppam": {
+      "purchase_price": 340,
+      "base_rent": 35,
+      "rent": {
+        "0": 35,
+        "1": 105,
+        "2": 210,
+        "3": 350,
+        "4": 525,
+        "5": 770
+      },
+      "territory_id": "T4",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "cuddalore": {
+      "purchase_price": 360,
+      "base_rent": 35,
+      "rent": {
+        "0": 35,
+        "1": 105,
+        "2": 210,
+        "3": 350,
+        "4": 525,
+        "5": 770
+      },
+      "territory_id": "T4",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "kalapet": {
+      "purchase_price": 320,
+      "base_rent": 30,
+      "rent": {
+        "0": 30,
+        "1": 90,
+        "2": 180,
+        "3": 300,
+        "4": 450,
+        "5": 660
+      },
+      "territory_id": "T5",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "rediyarpalayam": {
+      "purchase_price": 340,
+      "base_rent": 35,
+      "rent": {
+        "0": 35,
+        "1": 105,
+        "2": 210,
+        "3": 350,
+        "4": 525,
+        "5": 770
+      },
+      "territory_id": "T5",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "kottakuppam": {
+      "purchase_price": 360,
+      "base_rent": 35,
+      "rent": {
+        "0": 35,
+        "1": 105,
+        "2": 210,
+        "3": 350,
+        "4": 525,
+        "5": 770
+      },
+      "territory_id": "T5",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "lawspet": {
+      "purchase_price": 380,
+      "base_rent": 40,
+      "rent": {
+        "0": 40,
+        "1": 120,
+        "2": 240,
+        "3": 400,
+        "4": 600,
+        "5": 880
+      },
+      "territory_id": "T6",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "muthialpet": {
+      "purchase_price": 400,
+      "base_rent": 40,
+      "rent": {
+        "0": 40,
+        "1": 120,
+        "2": 240,
+        "3": 400,
+        "4": 600,
+        "5": 880
+      },
+      "territory_id": "T6",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "nellithope": {
+      "purchase_price": 420,
+      "base_rent": 40,
+      "rent": {
+        "0": 40,
+        "1": 120,
+        "2": 240,
+        "3": 400,
+        "4": 600,
+        "5": 880
+      },
+      "territory_id": "T6",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "uzhavarkarai": {
+      "purchase_price": 380,
+      "base_rent": 40,
+      "rent": {
+        "0": 40,
+        "1": 120,
+        "2": 240,
+        "3": 400,
+        "4": 600,
+        "5": 880
+      },
+      "territory_id": "T7",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "thattanchavady": {
+      "purchase_price": 400,
+      "base_rent": 40,
+      "rent": {
+        "0": 40,
+        "1": 120,
+        "2": 240,
+        "3": 400,
+        "4": 600,
+        "5": 880
+      },
+      "territory_id": "T7",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "bussy_street": {
+      "purchase_price": 420,
+      "base_rent": 40,
+      "rent": {
+        "0": 40,
+        "1": 120,
+        "2": 240,
+        "3": 400,
+        "4": 600,
+        "5": 880
+      },
+      "territory_id": "T8",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "mission_street": {
+      "purchase_price": 440,
+      "base_rent": 45,
+      "rent": {
+        "0": 45,
+        "1": 135,
+        "2": 270,
+        "3": 450,
+        "4": 675,
+        "5": 990
+      },
+      "territory_id": "T8",
+      "full_set_undeveloped_multiplier": 2
+    },
+    "white_town": {
+      "purchase_price": 460,
+      "base_rent": 45,
+      "rent": {
+        "0": 45,
+        "1": 135,
+        "2": 270,
+        "3": 450,
+        "4": 675,
+        "5": 990
+      },
+      "territory_id": "T8",
+      "full_set_undeveloped_multiplier": 2
+    }
+  }
+}
