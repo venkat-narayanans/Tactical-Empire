@@ -254,12 +254,18 @@
 
 /* ------------------------------------------------------- toasts and banner */
 
+/*
+ * An explicit width: a fixed element with only `right` set shrink-wraps, and
+ * the toasts' own min-width then overflowed past the right edge of the screen.
+ */
 .toasts {
   position: fixed;
   right: 16px;
   bottom: calc(var(--actionbar-height) + 14px);
+  width: min(340px, calc(100vw - 32px));
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: var(--gap-sm);
   z-index: 40;
   pointer-events: none;
@@ -269,8 +275,7 @@
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-  min-width: 240px;
-  max-width: 340px;
+  width: 100%;
   padding: 9px 12px;
   border-radius: var(--radius);
   border: 1px solid var(--line);

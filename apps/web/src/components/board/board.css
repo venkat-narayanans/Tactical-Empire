@@ -109,6 +109,18 @@ button.tile:hover {
   );
 }
 
+/*
+ * Nothing in the tile may shrink: a tile is only a few dozen pixels tall, and
+ * letting flex shrink these squeezed the city name to zero height whenever a
+ * player token landed on the space.
+ */
+.tile__head,
+.tile__name,
+.tile__price,
+.tile__flag {
+  flex-shrink: 0;
+}
+
 .tile__head {
   display: flex;
   align-items: center;
@@ -118,16 +130,31 @@ button.tile:hover {
   flex-wrap: wrap;
 }
 
+/*
+ * City names are long single words (Rediyarpalayam, Ariyankuppam) with no
+ * spaces to break at, and a tile is only about a twelfth of the board wide.
+ * `text-wrap: balance` splits them into even halves instead of stranding one
+ * letter on the last line, and the line clamp keeps a name inside its tile
+ * without shrinking the type below a readable size.
+ */
 .tile__name {
   font-size: var(--tile-font);
   font-weight: 650;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   color: var(--ink-strong);
   overflow-wrap: anywhere;
-  hyphens: auto;
-  max-height: 2.3em;
+  text-wrap: balance;
+  /* A height cap in ems rather than -webkit-line-clamp: as a flex item the
+     -webkit-box display is blockified, which collapses the element to zero. */
+  max-height: 2.2em;
   overflow: hidden;
+}
+
+/* Side tiles are wide and short, so names there usually fit on one line. */
+.board__cell--left .tile__name,
+.board__cell--right .tile__name {
+  letter-spacing: -0.01em;
 }
 
 .tile__price {
@@ -237,14 +264,19 @@ button.tile:hover {
 
 /* --------------------------------------------------------------- tokens */
 
+/* Tokens sit on top of the tile rather than in its flow, so they can never
+   push the city name or price out of the space. */
 .tile__tokens {
+  position: absolute;
+  right: 2px;
+  bottom: 6px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 2px;
-  flex-wrap: wrap;
-  margin-top: auto;
-  padding-bottom: 3px;
+  flex-wrap: wrap-reverse;
+  max-width: calc(100% - 4px);
+  pointer-events: none;
 }
 
 .token {
