@@ -46,6 +46,7 @@ export interface Logger {
 }
 
 const ROOM_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const DEFAULT_ROOM_IDLE_TIMEOUT_MS = 1000 * 60 * 60 * 6;
 
 /**
  * Owns every live room.
@@ -64,6 +65,8 @@ export class RoomService {
   constructor(
     private readonly store: GameStore,
     private readonly logger: Logger,
+    /** How long a finished or abandoned room stays in memory. */
+    private readonly idleTimeoutMs: number = DEFAULT_ROOM_IDLE_TIMEOUT_MS,
   ) {}
 
   // ---------------------------------------------------------------- room setup
@@ -355,7 +358,7 @@ export class RoomService {
 
   private evictIfIdle(gameId: string, room: Room): void {
     if (room.connections.size > 0) return;
-    if (Date.now() - room.lastActivity < 1000 * 60 * 30) return;
+    if (Date.now() - room.lastActivity < this.idleTimeoutMs) return;
     this.rooms.delete(gameId);
     this.codeToGameId.delete(room.state.roomCode);
   }

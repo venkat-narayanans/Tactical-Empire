@@ -44,9 +44,13 @@ export function CreateGame() {
     setBusy(true);
     try {
       await connect();
-      await send('CREATE_ROOM', { playerName: playerName.trim(), settings });
-    } catch (rejection) {
-      setError((rejection as CommandError).message ?? 'Could not create the game.');
+      const rejection = await send('CREATE_ROOM', { playerName: playerName.trim(), settings });
+      if (rejection) {
+        setError(rejection.message);
+        setBusy(false);
+      }
+    } catch (error) {
+      setError((error as CommandError).message ?? 'Could not create the game.');
       setBusy(false);
     }
   }

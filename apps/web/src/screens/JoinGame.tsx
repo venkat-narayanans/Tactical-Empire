@@ -23,12 +23,16 @@ export function JoinGame() {
     setBusy(true);
     try {
       await connect();
-      await send('JOIN_ROOM', {
+      const rejection = await send('JOIN_ROOM', {
         roomCode: roomCode.trim().toUpperCase(),
         playerName: playerName.trim(),
       });
-    } catch (rejection) {
-      setError((rejection as CommandError).message ?? 'Could not join that game.');
+      if (rejection) {
+        setError(rejection.message);
+        setBusy(false);
+      }
+    } catch (error) {
+      setError((error as CommandError).message ?? 'Could not join that game.');
       setBusy(false);
     }
   }

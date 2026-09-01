@@ -43,6 +43,7 @@ export function projectStateForPlayer(state: GameState, viewerId: PlayerId): Cli
       stats: isSelf ? { ...player.stats } : null,
       freeScoutCharges: isSelf ? player.freeScoutCharges : null,
       allyId: allyOf(state, player.id),
+      allianceCooldownUntilRound: player.allianceCooldownUntilRound,
     };
   }
 

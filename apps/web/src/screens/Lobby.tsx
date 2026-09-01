@@ -195,6 +195,13 @@ export function Lobby() {
                 onChange={(value) => patchSettings({ fullSetX2Rent: value })}
               />
               <Toggle
+                id="lobby-detention-rent"
+                label="Collect rent while at IG Signal"
+                disabled={!isHost}
+                checked={game.settings.rentWhileInIgSignal}
+                onChange={(value) => patchSettings({ rentWhileInIgSignal: value })}
+              />
+              <Toggle
                 id="lobby-random"
                 label="Randomise player order"
                 disabled={!isHost}

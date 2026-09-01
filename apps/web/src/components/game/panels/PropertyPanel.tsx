@@ -3,6 +3,7 @@ import { CITY_BY_ID, SPECIAL_BY_ID } from '@te/config';
 import { useShallow } from 'zustand/react/shallow';
 import { useGameStore } from '../../../store/game-store.js';
 import {
+  buildingRefundOf,
   canBuildHint,
   developmentLabel,
   displayName,
@@ -140,7 +141,7 @@ export function PropertyPanel({ game }: { readonly game: ClientGameState }) {
                 className="btn btn--block"
                 onClick={() => void send('SELL_BUILDING', { propertyId: selectedPropertyId })}
               >
-                Sell building · {formatMoney(Math.floor(houseCost * 0.5))}
+                Sell building · {formatMoney(buildingRefundOf(selectedPropertyId))}
               </button>
             ) : null}
 

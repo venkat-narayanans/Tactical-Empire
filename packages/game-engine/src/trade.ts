@@ -39,7 +39,6 @@ function assertTradableAssets(
       throw ruleError('INVALID_TRADE', 'That property is in an active auction.');
     }
   }
-  if (assets.cash === 0 && assets.properties.length === 0) return;
 }
 
 function assertTradeAllowed(state: GameState, playerId: PlayerId, targetId: PlayerId): void {

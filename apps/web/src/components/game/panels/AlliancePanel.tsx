@@ -18,7 +18,10 @@ export function AlliancePanel({ game }: { readonly game: ClientGameState }) {
   const candidates = opponents(game).filter(
     (player) => player.status === 'active' && !player.allyId,
   );
-  const cooldownActive = false;
+  // The engine refuses a request while either side is still inside the cooldown
+  // that follows their last alliance, so the button has to know about it too.
+  const myCooldownUntil = me?.allianceCooldownUntilRound ?? 0;
+  const onCooldown = game.round < myCooldownUntil;
 
   return (
     <div className="stack">
@@ -79,10 +82,17 @@ export function AlliancePanel({ game }: { readonly game: ClientGameState }) {
                 One alliance at a time, lasting {CONFIG.alliances.duration_rounds} rounds. An
                 alliance is what allows army lending.
               </p>
+              {onCooldown ? (
+                <p className="notice tiny">
+                  Your last alliance has just ended. You can form a new one from round{' '}
+                  {myCooldownUntil}.
+                </p>
+              ) : null}
               {candidates.map((player) => {
                 const alreadyAsked = outgoing.some(
                   (request) => request.toPlayerId === player.id,
                 );
+                const targetOnCooldown = game.round < player.allianceCooldownUntilRound;
                 return (
                   <div key={player.id} className="row row--between">
                     <span className="row">
@@ -96,10 +106,15 @@ export function AlliancePanel({ game }: { readonly game: ClientGameState }) {
                     <button
                       type="button"
                       className="btn btn--sm btn--primary"
-                      disabled={alreadyAsked || cooldownActive}
+                      disabled={alreadyAsked || onCooldown || targetOnCooldown}
+                      title={
+                        targetOnCooldown
+                          ? `${player.name} cannot ally again until round ${player.allianceCooldownUntilRound}.`
+                          : undefined
+                      }
                       onClick={() => void send('REQUEST_ALLIANCE', { targetPlayerId: player.id })}
                     >
-                      {alreadyAsked ? 'Requested' : 'Propose'}
+                      {alreadyAsked ? 'Requested' : targetOnCooldown ? 'On cooldown' : 'Propose'}
                     </button>
                   </div>
                 );

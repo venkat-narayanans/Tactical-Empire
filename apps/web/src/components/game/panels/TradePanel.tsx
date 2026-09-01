@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ClientGameState, PlayerId } from '@te/shared';
 import { useGameStore } from '../../../store/game-store.js';
 import {
@@ -36,6 +36,15 @@ export function TradePanel({ game }: { readonly game: ClientGameState }) {
     [game, targetId],
   );
 
+  // Bankruptcy can remove the selected partner from the list while the select
+  // still holds their id, which would send an offer nobody can accept.
+  useEffect(() => {
+    if (targetId && !others.some((player) => player.id === targetId)) {
+      setTargetId(others[0]?.id ?? '');
+      setRequestProperties([]);
+    }
+  }, [others, targetId]);
+
   const incoming = game.trades.filter((trade) => trade.toPlayerId === game.viewerId);
   const outgoing = game.trades.filter((trade) => trade.fromPlayerId === game.viewerId);
 
@@ -57,11 +66,13 @@ export function TradePanel({ game }: { readonly game: ClientGameState }) {
 
   async function submit(): Promise<void> {
     if (!targetId) return;
-    await send('CREATE_TRADE', {
+    const rejection = await send('CREATE_TRADE', {
       targetPlayerId: targetId,
       offered: { cash: offerCash, properties: offerProperties },
       requested: { cash: requestCash, properties: requestProperties },
     });
+    // A rejected offer keeps the form, so the player can correct it.
+    if (rejection) return;
     setOfferCash(0);
     setRequestCash(0);
     setOfferProperties([]);

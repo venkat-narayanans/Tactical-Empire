@@ -62,6 +62,7 @@ export function Board({
                 space={space}
                 property={property}
                 owner={owner}
+                round={game.round}
                 selected={selectedPropertyId === space.id}
                 onSelect={onSelectProperty}
               >

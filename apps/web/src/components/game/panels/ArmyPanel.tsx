@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ARMY_UNITS, CONFIG } from '@te/config';
 import type { ClientGameState } from '@te/shared';
 import { useGameStore } from '../../../store/game-store.js';
@@ -22,9 +22,22 @@ export function ArmyPanel({ game }: { readonly game: ClientGameState }) {
   );
   const [lendPower, setLendPower] = useState(maxLend);
 
+  // Recruiting or lending moves the cap, so an untouched field follows it
+  // rather than staying on the value it had when the panel opened.
+  useEffect(() => {
+    setLendPower((current) => (current > maxLend || current === 0 ? maxLend : current));
+  }, [maxLend]);
+
   if (!me || !summary) return null;
 
   const room = summary.capacity - summary.totalUnits;
+  // Only units the player still holds can be sold; lent ones are locked away.
+  const freeUnitCounts = (me.army ?? [])
+    .filter((unit) => unit.state === 'active')
+    .reduce<Record<string, number>>((counts, unit) => {
+      counts[unit.type] = (counts[unit.type] ?? 0) + 1;
+      return counts;
+    }, {});
 
   return (
     <div className="stack">
@@ -68,6 +81,7 @@ export function ArmyPanel({ game }: { readonly game: ClientGameState }) {
         <div className="panel__body stack">
           {ARMY_UNITS.map((unit) => {
             const owned = summary.unitCounts[unit.id] ?? 0;
+            const sellable = freeUnitCounts[unit.id] ?? 0;
             const affordable = (me.cash ?? 0) >= unit.cost;
             return (
               <div key={unit.id} className="row row--between unit-row">
@@ -83,7 +97,12 @@ export function ArmyPanel({ game }: { readonly game: ClientGameState }) {
                   <button
                     type="button"
                     className="btn btn--sm"
-                    disabled={owned === 0}
+                    disabled={sellable === 0}
+                    title={
+                      sellable === 0 && owned > 0
+                        ? 'Those units are lent to your ally.'
+                        : undefined
+                    }
                     onClick={() => void send('SELL_ARMY', { unitType: unit.id, quantity: 1 })}
                   >
                     Sell
@@ -149,17 +168,9 @@ export function ArmyPanel({ game }: { readonly game: ClientGameState }) {
                 Commit support
               </button>
               <p className="tiny muted">
-                Committed units stay locked with your ally until the alliance ends.
+                Committed units stay locked with your ally until the alliance ends, and are
+                released automatically when it does.
               </p>
-              {summary.committedPower > 0 ? (
-                <button
-                  type="button"
-                  className="btn btn--sm btn--block"
-                  onClick={() => void send('RECALL_ARMY', { targetPlayerId: ally.id })}
-                >
-                  Recall support
-                </button>
-              ) : null}
             </>
           )}
         </div>

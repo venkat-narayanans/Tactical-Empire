@@ -101,6 +101,16 @@ export function unmortgageCostOf(propertyId: string): number {
   return Math.ceil(mortgageValueOf(propertyId) * (1 + CONFIG.mortgage.unmortgage_interest));
 }
 
+/** What selling one building back returns, per GAME_CONFIG.development. */
+export function buildingRefundOf(propertyId: string): number {
+  return Math.floor(houseCostFor(propertyId) * CONFIG.development.resale_percentage);
+}
+
+/** "1 property" / "3 properties" - used wherever a count is shown inline. */
+export function pluralise(count: number, singular: string, plural: string): string {
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
 export function developmentLabel(level: number): string {
   if (level === 0) return 'Undeveloped';
   if (level === 5) return 'Hotel';

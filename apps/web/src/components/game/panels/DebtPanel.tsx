@@ -1,9 +1,9 @@
 import type { ClientGameState, PendingDebt } from '@te/shared';
 import { useGameStore } from '../../../store/game-store.js';
 import {
+  buildingRefundOf,
   displayName,
   formatMoney,
-  houseCostFor,
   mortgageValueOf,
   propertiesOf,
   self,
@@ -84,7 +84,7 @@ export function DebtPanel({
                 className="btn btn--sm btn--block"
                 onClick={() => void send('SELL_BUILDING', { propertyId: property.id })}
               >
-                {displayName(property.id)} · +{formatMoney(Math.floor(houseCostFor(property.id) * 0.5))}
+                {displayName(property.id)} · +{formatMoney(buildingRefundOf(property.id))}
               </button>
             ))}
           </div>

@@ -119,7 +119,7 @@ export function ActionBar({ game }: { readonly game: ClientGameState }) {
     );
   }
 
-  if (!game.turn.hasRolled || game.turn.extraRollPending) {
+  if (!game.turn.hasRolled) {
     return (
       <footer className="actionbar actionbar--mine">
         <span className="actionbar__prompt">
@@ -132,6 +132,27 @@ export function ActionBar({ game }: { readonly game: ClientGameState }) {
           onClick={() => void send('ROLL_DICE')}
         >
           Roll dice
+        </button>
+      </footer>
+    );
+  }
+
+  // A double is banked, not rolled immediately: the player finishes acting on
+  // the space they landed on, and closing the turn hands them the extra roll
+  // instead of passing play on. Offering "Roll dice" here would be rejected.
+  if (game.turn.extraRollPending) {
+    return (
+      <footer className="actionbar actionbar--mine">
+        <span className="actionbar__prompt">
+          You rolled a double — finish acting here, then take your extra roll.
+        </span>
+        <button
+          type="button"
+          className="btn btn--primary btn--lg"
+          disabled={animating}
+          onClick={() => void send('END_TURN')}
+        >
+          Take extra roll
         </button>
       </footer>
     );

@@ -20,7 +20,7 @@ export async function createServer(overrides: Partial<typeof serverConfig> = {})
 
   const app = Fastify({ logger: { level: config.logLevel } });
   const store = new SqliteGameStore(config.databaseUrl);
-  const rooms = new RoomService(store, app.log);
+  const rooms = new RoomService(store, app.log, config.roomIdleTimeoutMs);
 
   app.get('/health', async () => ({ status: 'ok', uptime: process.uptime() }));
 

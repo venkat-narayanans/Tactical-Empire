@@ -52,6 +52,12 @@ export interface ClientPlayerView {
   readonly freeScoutCharges: number | null;
   /** Public: the ally id if this player currently has an active alliance. */
   readonly allyId: PlayerId | null;
+  /**
+   * Public: the first round in which this player may form a new alliance. It
+   * follows from the public end of their last alliance, and the engine rejects
+   * a request from either side before it.
+   */
+  readonly allianceCooldownUntilRound: number;
 }
 
 export interface ArmySummary {

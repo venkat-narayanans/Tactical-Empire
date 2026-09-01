@@ -2,6 +2,17 @@ import { describe, expect, it } from 'vitest';
 import { CONFIG, GO_TO_IG_SIGNAL_INDEX, IG_SIGNAL_INDEX, VACATION_INDEX } from '@te/config';
 import { Harness, endTurnCleanly, harnessLandingOn } from '../helpers/engine-harness.js';
 
+/** A game whose first roll is a double, for the extra-roll flow. */
+function doubleRollHarness(settings?: { auction: boolean }): Harness {
+  for (let seed = 1; seed < 500; seed += 1) {
+    const h = new Harness({ seed });
+    h.start(['Ana', 'Ben'], settings);
+    h.run(h.activeId(), 'ROLL_DICE');
+    if (h.state.turn.extraRollPending) return h;
+  }
+  throw new Error('no seed produced a double on the first roll');
+}
+
 describe('turn order and dice', () => {
   it('only lets the active player roll', () => {
     const h = new Harness();
@@ -34,6 +45,28 @@ describe('turn order and dice', () => {
     h.run(active, 'ROLL_DICE');
     if (h.state.turn.extraRollPending) return; // doubles legitimately grant another roll
     expect(h.expectRejected(active, 'ROLL_DICE')).toBe('INVALID_PHASE');
+  });
+
+  it('banks a double and hands the extra roll back on END_TURN', () => {
+    // The extra roll is not immediate: the player finishes acting on the space
+    // they landed on, and ending the turn returns the dice to them instead of
+    // passing play on. The action bar renders exactly this sequence.
+    const h = doubleRollHarness({ auction: false });
+    const active = h.activeId();
+
+    expect(h.state.turn.extraRollPending).toBe(true);
+    expect(h.state.phase).toBe('ACTION');
+    // Rolling straight away is not the way the extra roll is taken.
+    expect(h.expectRejected(active, 'ROLL_DICE')).toBe('INVALID_PHASE');
+
+    h.state.turn.pendingPurchase = null;
+    h.run(active, 'END_TURN');
+
+    expect(h.activeId()).toBe(active);
+    expect(h.state.phase).toBe('PLAYER_TURN');
+    expect(h.state.turn.hasRolled).toBe(false);
+    h.run(active, 'ROLL_DICE');
+    expect(h.state.turn.dice).not.toBeNull();
   });
 
   it('is deterministic for a given seed', () => {

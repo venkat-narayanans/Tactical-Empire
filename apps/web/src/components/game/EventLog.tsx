@@ -5,7 +5,18 @@ import { displayName, formatMoney } from '../../lib/view-helpers.js';
 /** A short, scrollable history so a returning player can catch up. */
 export function EventLog({ game }: { readonly game: ClientGameState }) {
   const recentEvents = useGameStore((state) => state.recentEvents);
-  const entries = [...recentEvents].reverse().slice(0, 25);
+  // Summarise first, then take 25. Slicing the raw stream would spend most of
+  // the log's slots on bookkeeping events that render nothing.
+  const entries = [...recentEvents]
+    .reverse()
+    .map((event) => ({
+      event,
+      line: summarise(game, event.type, event.payload as Record<string, unknown>),
+    }))
+    .filter((entry): entry is { event: (typeof recentEvents)[number]; line: string } =>
+      entry.line !== null,
+    )
+    .slice(0, 25);
 
   return (
     <section className="panel">
@@ -13,16 +24,12 @@ export function EventLog({ game }: { readonly game: ClientGameState }) {
         <span className="panel__title">Recent events</span>
       </div>
       <ul className="event-log scroll-y">
-        {entries.map((event) => {
-          const line = summarise(game, event.type, event.payload as Record<string, unknown>);
-          if (!line) return null;
-          return (
-            <li key={event.eventId} className="event-log__item tiny">
-              <span className="event-log__seq">#{event.sequence}</span>
-              {line}
-            </li>
-          );
-        })}
+        {entries.map(({ event, line }) => (
+          <li key={event.eventId} className="event-log__item tiny">
+            <span className="event-log__seq">#{event.sequence}</span>
+            {line}
+          </li>
+        ))}
         {entries.length === 0 ? (
           <li className="event-log__item tiny muted">Nothing has happened yet.</li>
         ) : null}

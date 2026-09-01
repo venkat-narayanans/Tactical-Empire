@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { propertyDisplayName } from '@te/config';
 import type {
   ClientGameState,
+  CommandError,
   CommandPayload,
   CommandType,
   GameEvent,
@@ -58,7 +59,16 @@ interface GameStoreState {
 
   // ---- actions
   connect(): Promise<void>;
-  send<T extends CommandType>(type: T, payload?: CommandPayload<T>): Promise<void>;
+  /**
+   * Sends a command and resolves with the server's rejection, or null when it
+   * was accepted. It never rejects: a rejected command is normal gameplay (you
+   * were too slow, someone outbid you) and is already surfaced as a toast, so
+   * the fire-and-forget call sites must not produce unhandled rejections.
+   */
+  send<T extends CommandType>(
+    type: T,
+    payload?: CommandPayload<T>,
+  ): Promise<CommandError | null>;
   setScreen(screen: Screen): void;
   setPanel(panel: ContextPanel): void;
   selectProperty(propertyId: string | null): void;
@@ -98,6 +108,15 @@ function storeSession(session: SessionInfo | null): void {
 }
 
 let connection: GameConnection | null = null;
+
+/** Normalises anything thrown on the way to the server into a CommandError. */
+function toCommandError(rejection: unknown): CommandError {
+  if (rejection && typeof rejection === 'object' && 'code' in rejection && 'message' in rejection) {
+    return rejection as CommandError;
+  }
+  const message = rejection instanceof Error ? rejection.message : 'Something went wrong.';
+  return { code: 'INTERNAL_ERROR', message };
+}
 
 export const useGameStore = create<GameStoreState>((set, get) => ({
   session: null,
@@ -141,8 +160,13 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   },
 
   async send(type, payload) {
-    if (!connection) await get().connect();
-    await connection!.send(type, payload ?? ({} as never));
+    try {
+      if (!connection) await get().connect();
+      await connection!.send(type, payload ?? ({} as never));
+      return null;
+    } catch (rejection) {
+      return toCommandError(rejection);
+    }
   },
 
   setScreen: (screen) => set({ screen }),
@@ -163,6 +187,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
     storeSession(null);
     connection?.close();
     connection = null;
+    for (const timer of moveTimers.values()) window.clearInterval(timer);
+    moveTimers.clear();
     set({
       session: null,
       game: null,
@@ -173,6 +199,10 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       tokenPositions: {},
       recentEvents: [],
       status: 'idle',
+      animating: false,
+      diceRolling: false,
+      lastError: null,
+      toasts: [],
     });
   },
 }));
@@ -272,38 +302,63 @@ function toastKind(type: string): Toast['kind'] {
   return 'info';
 }
 
+const STEP_INTERVAL_MS = 130;
+/**
+ * Hard ceiling on one token walk. Background tabs have their timers throttled,
+ * so without a wall-clock deadline an animation could outlive the turn it
+ * belongs to and leave `animating` - and with it the action buttons - stuck.
+ */
+const ANIMATION_GRACE_MS = 1500;
+
+/** Running token walks, so a new move for a player replaces its predecessor. */
+const moveTimers = new Map<PlayerId, number>();
+
+function finishMove(set: Setter, playerId: PlayerId, position: number): void {
+  const timer = moveTimers.get(playerId);
+  if (timer !== undefined) window.clearInterval(timer);
+  moveTimers.delete(playerId);
+  set((state) => ({
+    tokenPositions: { ...state.tokenPositions, [playerId]: position },
+    animating: moveTimers.size > 0,
+  }));
+}
+
 /**
  * Walks a token through the intermediate spaces. Purely visual: the store's
- * `tokenPositions` catches up to the authoritative position it was given.
+ * `tokenPositions` catches up to the authoritative position it was given, and
+ * it always arrives - a landing can chain into a second move, and the walk is
+ * abandoned for the final square rather than left half-finished.
  */
 function queueTokenMove(get: Getter, set: Setter, event: GameEvent): void {
   const payload = event.payload as { playerId: PlayerId; from: number; to: number };
   const { playerId, from, to } = payload;
-
-  if (event.type === 'ForcedMovement') {
-    set((state) => ({ tokenPositions: { ...state.tokenPositions, [playerId]: to } }));
-    return;
-  }
+  void get;
 
   const forward = ((to - from) % 40 + 40) % 40;
-  const stepCount = forward === 0 ? 0 : forward;
-  if (stepCount === 0 || stepCount > 12) {
-    set((state) => ({ tokenPositions: { ...state.tokenPositions, [playerId]: to } }));
+  const stepCount = event.type === 'ForcedMovement' || forward > 12 ? 0 : forward;
+  if (stepCount === 0) {
+    finishMove(set, playerId, to);
     return;
   }
 
-  set({ animating: true });
+  // A chained move supersedes the one still running for this player.
+  const previous = moveTimers.get(playerId);
+  if (previous !== undefined) window.clearInterval(previous);
+
   let step = 0;
+  const deadline = Date.now() + stepCount * STEP_INTERVAL_MS + ANIMATION_GRACE_MS;
   const timer = window.setInterval(() => {
     step += 1;
+    if (step >= stepCount || Date.now() > deadline) {
+      finishMove(set, playerId, to);
+      return;
+    }
     const position = (from + step) % 40;
     set((state) => ({ tokenPositions: { ...state.tokenPositions, [playerId]: position } }));
-    if (step >= stepCount) {
-      window.clearInterval(timer);
-      set({ animating: false });
-      void get();
-    }
-  }, 130);
+  }, STEP_INTERVAL_MS);
+
+  moveTimers.set(playerId, timer);
+  set({ animating: true });
 }
 
 function describeEvent(get: Getter, event: GameEvent): string | null {

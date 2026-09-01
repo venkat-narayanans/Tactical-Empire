@@ -5,6 +5,7 @@ import {
   displayName,
   formatMoney,
   orderedPlayers,
+  pluralise,
   propertiesOf,
   self,
 } from '../../lib/view-helpers.js';
@@ -173,7 +174,8 @@ function PlayerRow({ game, player, selected, onSelect }: PlayerRowProps) {
             {isActive ? <span className="badge badge--accent">Turn</span> : null}
           </span>
           <span className="player-row__meta tiny muted">
-            {player.propertyCount} properties · {player.completedTerritories.length} territories
+            {pluralise(player.propertyCount, 'property', 'properties')} ·{' '}
+            {pluralise(player.completedTerritories.length, 'territory', 'territories')}
             {player.isSelf ? ` · ${formatMoney(player.cash)}` : ''}
           </span>
           {!player.isSelf && report ? (

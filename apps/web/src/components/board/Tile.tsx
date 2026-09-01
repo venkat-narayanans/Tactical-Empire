@@ -18,12 +18,14 @@ interface TileProps {
   readonly space: BoardSpace;
   readonly property: PropertyState | undefined;
   readonly owner: ClientPlayerView | undefined;
+  /** Current game round, so war damage can be shown only while it still applies. */
+  readonly round: number;
   readonly selected: boolean;
   readonly onSelect: (propertyId: string | null) => void;
   readonly children?: React.ReactNode;
 }
 
-export function Tile({ space, property, owner, selected, onSelect, children }: TileProps) {
+export function Tile({ space, property, owner, round, selected, onSelect, children }: TileProps) {
   const city = CITY_BY_ID.get(space.id);
   const special = SPECIAL_BY_ID.get(space.id);
   const purchasable = Boolean(city ?? special);
@@ -55,7 +57,7 @@ export function Tile({ space, property, owner, selected, onSelect, children }: T
         {property && property.level > 0 ? (
           <DevelopmentMark
             level={property.level}
-            warDamaged={property.warDamagedUntilRound > 0}
+            warDamaged={property.warDamagedUntilRound > round}
           />
         ) : null}
       </span>
