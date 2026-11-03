@@ -30,6 +30,23 @@ export interface ConnectionHandlers {
 const RECONNECT_DELAYS_MS = [500, 1000, 2000, 4000, 8000];
 
 function websocketUrl(): string {
+  const envUrl = import.meta.env.VITE_WS_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+    let url = envUrl.trim();
+    if (url.startsWith('http://')) {
+      url = 'ws://' + url.slice('http://'.length);
+    } else if (url.startsWith('https://')) {
+      url = 'wss://' + url.slice('https://'.length);
+    }
+    if (!url.startsWith('ws://') && !url.startsWith('wss://')) {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      url = `${protocol}//${url}`;
+    }
+    if (!url.endsWith('/ws')) {
+      url = url.replace(/\/+$/, '') + '/ws';
+    }
+    return url;
+  }
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   return `${protocol}//${window.location.host}/ws`;
 }

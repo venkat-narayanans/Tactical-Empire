@@ -7,7 +7,9 @@
     "packages/*",
     "apps/*"
   ],
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "npm-run-all --parallel dev:server dev:web",
     "dev:server": "npm run dev --workspace @te/server",
@@ -19,7 +21,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "build:web": "npm run build --workspace @te/web",
+    "build:server": "npm run build --workspace @te/server"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
