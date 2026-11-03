@@ -47,8 +47,20 @@ function websocketUrl(): string {
     }
     return url;
   }
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  return `${protocol}//${window.location.host}/ws`;
+
+  // Local development / localhost: connect to local server
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === '0.0.0.0')
+  ) {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${window.location.host}/ws`;
+  }
+
+  // Deployed production default (e.g. on Vercel): connect to the live Render backend
+  return 'wss://tactical-empire.onrender.com/ws';
 }
 
 export class GameConnection {
