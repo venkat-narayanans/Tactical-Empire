@@ -1,3 +1,4 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import fs from 'node:fs';
 import Fastify from 'fastify';
 import fastifyStatic from '@fastify/static';
@@ -79,3 +80,18 @@ if (isEntrypoint) {
     });
   }
 }
+
+let instance: Awaited<ReturnType<typeof createServer>> | null = null;
+
+async function getOrInitApp() {
+  if (!instance) {
+    instance = await createServer();
+    await instance.app.ready();
+  }
+  return instance.app;
+}
+
+export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
+  const app = await getOrInitApp();
+  app.server.emit('request', req, res);
+}
