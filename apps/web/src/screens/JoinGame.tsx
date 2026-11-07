@@ -6,10 +6,11 @@ import { useGameStore } from '../store/game-store.js';
 /** Join an existing room by code. Server errors are shown verbatim - they are
  * already written for players and never expose internals. */
 export function JoinGame() {
-  const { setScreen, send, connect } = useGameStore(useShallow((state) => ({
+  const { setScreen, send, connect, status } = useGameStore(useShallow((state) => ({
     setScreen: state.setScreen,
     send: state.send,
     connect: state.connect,
+    status: state.status,
   })));
 
   const [playerName, setPlayerName] = useState('');
@@ -90,6 +91,11 @@ export function JoinGame() {
               {busy ? 'Joining…' : 'Join game'}
             </button>
           </div>
+          {busy && status !== 'connected' ? (
+            <p className="muted" role="status" style={{ textAlign: 'center', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+              Connecting to game server (waking up server, please wait ~20s)…
+            </p>
+          ) : null}
         </div>
       </form>
     </main>

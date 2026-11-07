@@ -11,10 +11,11 @@ import { useGameStore } from '../store/game-store.js';
  * GAME_CONFIG.host_settings and freezes them when the game starts.
  */
 export function CreateGame() {
-  const { setScreen, send, connect } = useGameStore(useShallow((state) => ({
+  const { setScreen, send, connect, status } = useGameStore(useShallow((state) => ({
     setScreen: state.setScreen,
     send: state.send,
     connect: state.connect,
+    status: state.status,
   })));
 
   const hs = CONFIG.host_settings;
@@ -180,6 +181,11 @@ export function CreateGame() {
               {busy ? 'Creating…' : 'Create game'}
             </button>
           </div>
+          {busy && status !== 'connected' ? (
+            <p className="muted" role="status" style={{ textAlign: 'center', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+              Connecting to game server (waking up server, please wait ~20s)…
+            </p>
+          ) : null}
         </div>
       </form>
     </main>

@@ -39,9 +39,9 @@ export function App() {
       {screen === 'game' ? <GameScreen /> : null}
       {screen === 'over' ? <GameOver /> : null}
 
-      {status === 'reconnecting' && screen !== 'game' ? (
+      {status === 'reconnecting' && (session || screen === 'lobby' || screen === 'over') ? (
         <div className="connection-banner" role="status">
-          {session ? 'Connection lost. Trying to reconnect...' : 'Connecting to game server (waking up server, please wait ~20s)...'}
+          Connection lost. Trying to reconnect...
         </div>
       ) : null}
 

@@ -536,3 +536,28 @@ When asked to implement Phase N:
 - stop
 
 Do not continue into later phases unless explicitly requested.
+
+---
+
+# 21. DEPLOYMENT & HOSTING INTEGRITY (RENDER & VERCEL)
+
+To prevent deployment breakage in Render and Vercel across all updates, the following rules MUST be maintained:
+
+### 21.1 Render (Backend WebSocket Server)
+- **Node Version**: Pinned to Node 22 LTS via `.node-version` (`22.14.0`) and `.nvmrc` (`22.14.0`) to match `better-sqlite3` native binaries.
+- **SQLite Compilation**: The build command (`build:server` and `build`) MUST include `npm rebuild better-sqlite3` before bundling so cached `node_modules` from previous builds never produce an ABI mismatch (`NODE_MODULE_VERSION` errors).
+- **Public URL**: `https://tactical-empire.onrender.com` / `wss://tactical-empire.onrender.com/ws`.
+
+### 21.2 Vercel (Frontend Single Page Application)
+- **Services Configuration**: `vercel.json` must declare `"services": { "web": { "root": "apps/web", "framework": "vite" } }` with rewrites `/(.*)` targeting `{ "service": "web" }`.
+- **Never Deploy Server on Vercel**: `apps/server` MUST NOT be declared as a Vercel service because Vercel functions cannot run long-lived WebSocket servers and fail on native SQLite compilation under Node 26.
+- **Node Engine Compatibility**: Root `package.json` `engines.node` must remain `">=22"` so Vercel's Node 26 builder accepts it without discontinuation errors.
+- **Connection Default**: `apps/web/src/net/connection.ts` must always default to `wss://tactical-empire.onrender.com/ws` in production, with localhost fallback for local development.
+
+### 21.3 Pre-push Verification
+Before pushing any commit to GitHub, ALWAYS run `npm run verify` to confirm:
+1. `typecheck` (`tsc -b --force`) passes.
+2. `lint` (`eslint .`) passes with 0 errors.
+3. `test` (`vitest run`) passes.
+4. `build` succeeds for both server and web.
+

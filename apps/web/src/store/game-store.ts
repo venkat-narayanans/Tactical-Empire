@@ -148,6 +148,10 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
           syncScreen(get, set, previous, game);
         },
         onEvents: (events) => handleEvents(get, set, events),
+        onSessionExpired: () => {
+          storeSession(null);
+          set({ session: null, game: null, screen: 'menu' });
+        },
         onRejected: (_requestId, error) => {
           set({ lastError: error.message });
           get().pushToast('error', error.message);
