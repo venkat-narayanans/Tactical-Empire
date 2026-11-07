@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: var(--left-panel-width) 1fr var(--right-panel-width);
   gap: var(--gap);
-  padding: var(--gap) var(--gap-lg);
+  padding: 6px var(--gap-lg);
   min-height: 0;
 }
 

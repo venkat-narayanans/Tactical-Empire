@@ -69,36 +69,51 @@
   /* Rhythm */
   --gap-xs: 4px;
   --gap-sm: 8px;
-  --gap: 12px;
-  --gap-lg: 18px;
+  --gap: 10px;
+  --gap-lg: 14px;
 
   /* Chrome heights, used to size the board so the page never scrolls. */
-  --topbar-height: 52px;
-  --actionbar-height: 76px;
-  --left-panel-width: 250px;
-  --right-panel-width: 320px;
+  --topbar-height: 48px;
+  --actionbar-height: 70px;
+  --left-panel-width: 230px;
+  --right-panel-width: 295px;
 
   --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --font-numeric: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
 /*
- * The board is sized from whichever of viewport height or width binds first,
- * so 1366x768 through 1920x1080 all fit in one screen with no page scrolling.
+ * The board is sized to maximize visibility and width across desktop and laptop screens.
+ * An expanded aspect ratio (up to 1.25) makes top and bottom tiles much wider,
+ * ensuring city names fit on a single line without wrapping or chopping syllables.
  */
 .layout-game {
-  --board-size: min(
-    calc(100vh - var(--topbar-height) - var(--actionbar-height) - 32px),
-    calc(100vw - var(--left-panel-width) - var(--right-panel-width) - 56px)
-  );
-  --tile-unit: calc(var(--board-size) / 12.2);
-  --tile-font: clamp(7px, calc(var(--tile-unit) * 0.185), 12px);
-  --tile-font-sm: clamp(6px, calc(var(--tile-unit) * 0.155), 10px);
+  --board-height: calc(100vh - var(--topbar-height) - var(--actionbar-height) - 16px);
+  --board-max-available-width: calc(100vw - var(--left-panel-width) - var(--right-panel-width) - 36px);
+  --board-width: min(calc(var(--board-height) * 1.25), var(--board-max-available-width));
+  --board-size: var(--board-width);
+  --tile-unit: calc(var(--board-height) / 11.7);
+  --tile-font: clamp(9px, calc(var(--tile-unit) * 0.195), 13.5px);
+  --tile-font-sm: clamp(7.5px, calc(var(--tile-unit) * 0.16), 11px);
 }
 
 @media (max-width: 1400px) {
   :root {
-    --left-panel-width: 218px;
-    --right-panel-width: 286px;
+    --topbar-height: 44px;
+    --actionbar-height: 66px;
+    --left-panel-width: 210px;
+    --right-panel-width: 270px;
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --topbar-height: 42px;
+    --actionbar-height: 62px;
+    --left-panel-width: 195px;
+    --right-panel-width: 245px;
+  }
+  .layout-game {
+    --board-width: min(calc(var(--board-height) * 1.15), var(--board-max-available-width));
   }
 }

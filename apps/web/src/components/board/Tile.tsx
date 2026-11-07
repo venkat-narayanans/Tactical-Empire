@@ -46,14 +46,21 @@ export function Tile({ space, property, owner, round, selected, onSelect, childr
     : undefined;
 
   const label = describe(space, property, owner);
+  const nameLen = space.name.length;
+  const nameClass = [
+    'tile__name',
+    nameLen >= 13 ? 'tile__name--long' : nameLen >= 11 ? 'tile__name--compact' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const body = (
     <>
       {purchasable ? <span className="tile__ownerbar" aria-hidden="true" /> : null}
 
       <span className="tile__head">
-        {city ? <TerritoryEmblem territoryId={city.territoryId} size={13} /> : null}
-        {!city && special ? <SpaceIcon spaceId={space.id} kind={space.kind} size={15} /> : null}
+        {city ? <TerritoryEmblem territoryId={city.territoryId} size={14} /> : null}
+        {!city && special ? <SpaceIcon spaceId={space.id} kind={space.kind} size={16} /> : null}
         {property && property.level > 0 ? (
           <DevelopmentMark
             level={property.level}
@@ -62,7 +69,7 @@ export function Tile({ space, property, owner, round, selected, onSelect, childr
         ) : null}
       </span>
 
-      <span className="tile__name">{space.name}</span>
+      <span className={nameClass} title={space.name}>{space.name}</span>
 
       {purchasable ? (
         <span className="tile__price">₹{city?.price ?? special?.price}</span>
@@ -77,9 +84,9 @@ export function Tile({ space, property, owner, round, selected, onSelect, childr
     return (
       <div className={classes} data-space={space.id} aria-label={label}>
         <span className="tile__head">
-          <SpaceIcon spaceId={space.id} kind={space.kind} size={18} />
+          <SpaceIcon spaceId={space.id} kind={space.kind} size={19} />
         </span>
-        <span className="tile__name">{space.name}</span>
+        <span className={nameClass} title={space.name}>{space.name}</span>
         {children}
       </div>
     );

@@ -1,8 +1,10 @@
 /* Board, tiles, emblems, development marks and tokens. */
 
 .board {
-  width: var(--board-size);
-  height: var(--board-size);
+  width: var(--board-width);
+  height: var(--board-height);
+  max-width: 100%;
+  max-height: 100%;
   flex: 0 0 auto;
 }
 
@@ -10,8 +12,8 @@
   display: grid;
   width: 100%;
   height: 100%;
-  grid-template-columns: 1.6fr repeat(9, 1fr) 1.6fr;
-  grid-template-rows: 1.6fr repeat(9, 1fr) 1.6fr;
+  grid-template-columns: 1.35fr repeat(9, 1fr) 1.35fr;
+  grid-template-rows: 1.35fr repeat(9, 1fr) 1.35fr;
   gap: 2px;
   padding: 6px;
   background: var(--surface-board);
@@ -31,11 +33,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 1px;
+  justify-content: center;
+  gap: 2px;
   width: 100%;
   height: 100%;
-  padding: 3px 2px 2px;
+  padding: 3px 2px 4px;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -45,6 +47,7 @@
   text-align: center;
   font-family: inherit;
   cursor: default;
+  box-sizing: border-box;
 }
 
 button.tile {
@@ -67,6 +70,7 @@ button.tile:hover {
   justify-content: center;
   gap: 3px;
   background: var(--surface-sunken);
+  padding: 4px 2px;
 }
 
 .tile--treasure {
@@ -131,37 +135,47 @@ button.tile:hover {
 }
 
 /*
- * City names are long single words (Rediyarpalayam, Ariyankuppam) with no
- * spaces to break at, and a tile is only about a twelfth of the board wide.
- * `text-wrap: balance` splits them into even halves instead of stranding one
- * letter on the last line, and the line clamp keeps a name inside its tile
- * without shrinking the type below a readable size.
+ * City names stay on a single line with white-space: nowrap.
+ * Long city names are given compact/long font modifiers so they never break
+ * into awkward fragments (e.g. "Muthialp" / "et") while maintaining crisp readability.
  */
 .tile__name {
   font-size: var(--tile-font);
   font-weight: 650;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   color: var(--ink-strong);
-  overflow-wrap: anywhere;
-  text-wrap: balance;
-  /* A height cap in ems rather than -webkit-line-clamp: as a flex item the
-     -webkit-box display is blockified, which collapses the element to zero. */
-  max-height: 2.2em;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1px;
+  box-sizing: border-box;
 }
 
-/* Side tiles are wide and short, so names there usually fit on one line. */
+.tile__name--compact {
+  font-size: calc(var(--tile-font) * 0.88);
+  letter-spacing: -0.03em;
+}
+
+.tile__name--long {
+  font-size: calc(var(--tile-font) * 0.80);
+  letter-spacing: -0.035em;
+}
+
 .board__cell--left .tile__name,
 .board__cell--right .tile__name {
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 .tile__price {
   font-size: var(--tile-font-sm);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .tile__flag {
@@ -170,10 +184,14 @@ button.tile:hover {
   font-weight: 650;
 }
 
-.board__cell--corner .tile__name {
-  font-size: calc(var(--tile-font) * 1.05);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+.board__cell--corner .tile__name,
+.tile--corner .tile__name {
+  white-space: normal;
+  text-wrap: balance;
+  font-size: calc(var(--tile-font) * 0.92);
+  line-height: 1.15;
+  max-height: 2.3em;
+  letter-spacing: 0.01em;
 }
 
 /* --------------------------------------------------------------- emblems */
