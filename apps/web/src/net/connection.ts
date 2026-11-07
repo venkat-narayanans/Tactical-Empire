@@ -22,12 +22,24 @@ export type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'reconnecti
 export interface ConnectionHandlers {
   onStatus(status: ConnectionStatus): void;
   onSession(session: SessionInfo): void;
+  onSessionExpired?(): void;
   onSnapshot(state: ClientGameState): void;
   onEvents(events: GameEvent[]): void;
   onRejected(requestId: string, error: CommandError): void;
 }
 
 const RECONNECT_DELAYS_MS = [500, 1000, 2000, 4000, 8000];
+
+function wakeUpBackendIfRemote(wsUrl: string): void {
+  try {
+    if (wsUrl.startsWith('wss://') && !wsUrl.includes('localhost') && !wsUrl.includes('127.0.0.1')) {
+      const httpUrl = wsUrl.replace('wss://', 'https://').replace(/\/ws\/?$/, '/health');
+      void fetch(httpUrl, { mode: 'no-cors' }).catch(() => undefined);
+    }
+  } catch {
+    // Ignore ping failure
+  }
+}
 
 function websocketUrl(): string {
   const envUrl = import.meta.env.VITE_WS_URL;
@@ -82,6 +94,7 @@ export class GameConnection {
     if (this.socket && this.socket.readyState <= WebSocket.OPEN) return Promise.resolve();
     this.closedByUs = false;
     this.setStatus(this.reconnectAttempt === 0 ? 'connecting' : 'reconnecting');
+    wakeUpBackendIfRemote(websocketUrl());
 
     return new Promise((resolve, reject) => {
       const socket = new WebSocket(websocketUrl());
@@ -94,6 +107,7 @@ export class GameConnection {
           void this.send('REJOIN_ROOM', { ...this.resume }).catch(() => {
             // The session expired; the UI falls back to the main menu.
             this.resume = null;
+            this.handlers.onSessionExpired?.();
           });
         }
         resolve();

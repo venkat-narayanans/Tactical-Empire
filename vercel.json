@@ -1,39 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "server": {
-      "root": "apps/server",
-      "framework": "fastify"
-    },
-    "web": {
-      "root": "apps/web",
-      "framework": "vite"
-    }
-  },
+  "buildCommand": "npm run build:web",
+  "outputDirectory": "apps/web/dist",
+  "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "server"
-      }
-    },
-    {
-      "source": "/ws",
-      "destination": {
-        "service": "server"
-      }
-    },
-    {
-      "source": "/health",
-      "destination": {
-        "service": "server"
-      }
-    },
-    {
       "source": "/(.*)",
-      "destination": {
-        "service": "web"
-      }
+      "destination": "/index.html"
     }
   ]
 }

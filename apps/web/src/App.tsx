@@ -17,10 +17,11 @@ import './styles/screens.css';
  * said so.
  */
 export function App() {
-  const { screen, connect, status } = useGameStore(useShallow((state) => ({
+  const { screen, connect, status, session } = useGameStore(useShallow((state) => ({
     screen: state.screen,
     connect: state.connect,
     status: state.status,
+    session: state.session,
   })));
 
   // Opening the socket immediately lets a stored session reconnect on load.
@@ -40,7 +41,7 @@ export function App() {
 
       {status === 'reconnecting' && screen !== 'game' ? (
         <div className="connection-banner" role="status">
-          Connection lost. Trying to reconnect…
+          {session ? 'Connection lost. Trying to reconnect...' : 'Connecting to game server (waking up server, please wait ~20s)...'}
         </div>
       ) : null}
 

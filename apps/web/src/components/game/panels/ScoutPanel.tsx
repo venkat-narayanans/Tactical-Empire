@@ -69,7 +69,7 @@ export function ScoutPanel({ game }: { readonly game: ClientGameState }) {
             {[...game.scoutReports]
               .sort((a, b) => b.round - a.round)
               .map((report) => (
-                <div key={report.targetId} className="report">
+                <div key={`${report.targetId}-${report.round}`} className="report">
                   <div className="row row--between">
                     <strong>{game.players[report.targetId]?.name ?? 'Player'}</strong>
                     <span className="badge">Round {report.round}</span>
