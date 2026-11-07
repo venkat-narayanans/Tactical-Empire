@@ -14,7 +14,7 @@
     "dev": "npm-run-all --parallel dev:server dev:web",
     "dev:server": "npm run dev --workspace @te/server",
     "dev:web": "npm run dev --workspace @te/web",
-    "build": "npm run build --workspace @te/server && npm run build --workspace @te/web",
+    "build": "npm rebuild better-sqlite3 && npm run build --workspace @te/server && npm run build --workspace @te/web",
     "start": "npm run start --workspace @te/server",
     "typecheck": "tsc -b --force",
     "lint": "eslint .",
@@ -23,7 +23,7 @@
     "test:e2e": "playwright test",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
     "build:web": "npm run build --workspace @te/web",
-    "build:server": "npm run build --workspace @te/server"
+    "build:server": "npm rebuild better-sqlite3 && npm run build --workspace @te/server"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
